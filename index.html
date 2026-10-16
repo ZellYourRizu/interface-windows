@@ -1,0 +1,860 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anime Desktop Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --white: #fff;
+    --glass: rgba(255, 255, 255, .13);
+    --border: rgba(255, 255, 255, .9);
+    --dark: #222;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    color: white;
+    background: #a5cce9;
+    overflow-x: hidden;
+}
+
+/* BACKGROUND */
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    background-image:
+        linear-gradient(rgba(20, 45, 75, .12),
+                        rgba(20, 45, 75, .22)),
+        url("https://res.cloudinary.com/besdbgfg/image/upload/f_auto,q_auto/wp1861779-japan-wallpapers");
+    background-position: center;
+    background-size: cover;
+}
+
+.background::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(3px);
+    background: rgba(100, 160, 210, .12);
+}
+
+/* MAIN GLASS PANEL */
+.main-panel {
+    position: relative;
+    width: calc(100% - 260px);
+    max-width: 1450px;
+    min-height: 630px;
+    height: 72vh;
+    margin: 100px auto 0;
+    border: 2px solid var(--border);
+    border-radius: 58px;
+    background: rgba(255, 255, 255, .12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* LEFT SOCIAL BAR */
+.social-bar {
+    position: fixed;
+    z-index: 10;
+    top: 50%;
+    left: 4.5%;
+    transform: translateY(-50%);
+    width: 105px;
+    padding: 25px 0;
+    border: 2px solid white;
+    border-radius: 60px;
+    background: rgba(255, 255, 255, .10);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.social-bar a {
+    width: 57px;
+    height: 57px;
+    border-radius: 50%;
+    background: #050505;
+    color: white;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 27px;
+    transition: .3s;
+}
+
+.social-bar a:first-child {
+    background: transparent;
+    color: black;
+    font-size: 36px;
+}
+
+.social-bar a:hover {
+    transform: scale(1.13);
+    background: #ff8eaf;
+}
+
+/* CLOCK */
+.clock {
+    position: absolute;
+    left: 7%;
+    top: 9%;
+    color: #050505;
+}
+
+#time {
+    font-size: clamp(32px, 4vw, 58px);
+    font-weight: 700;
+    letter-spacing: -3px;
+    line-height: 1.2;
+}
+
+#date {
+    font-size: 19px;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* CALENDAR */
+.calendar {
+    position: absolute;
+    left: 5%;
+    top: 32%;
+    width: 250px;
+    padding: 17px 23px 22px;
+    border-radius: 32px;
+    background: #252525;
+    color: white;
+}
+
+.calendar h2 {
+    font-size: 27px;
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.calendar-line {
+    width: 72%;
+    height: 4px;
+    background: white;
+    border-radius: 10px;
+    margin: 0 auto 12px;
+}
+
+.weekdays, .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    gap: 7px 3px;
+}
+
+.weekdays {
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.days span {
+    font-size: 16px;
+    cursor: default;
+}
+
+.days .today {
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.calendar-bottom {
+    width: 50%;
+    height: 7px;
+    background: white;
+    border-radius: 10px;
+    margin: 31px auto -10px;
+}
+
+/* MAIN ANIME CHARACTER */
+.character {
+    position: absolute;
+    z-index: 3;
+    left: 28%;
+    bottom: -2px;
+    width: 48%;
+    height: 110%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.character img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: bottom center;
+    filter: drop-shadow(0 0 2px rgba(255, 130, 175, .65));
+}
+
+/* RIGHT PROFILE */
+.right-panel {
+    position: absolute;
+    right: 4.5%;
+    top: 6%;
+    width: 27%;
+    z-index: 4;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-bottom: 55px;
+}
+
+.sound-button {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(10, 14, 30, .9);
+    color: white;
+    font-size: 22px;
+}
+
+.profile-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 9px 7px 30px;
+    background: white;
+    color: black;
+    border-radius: 40px;
+    font-weight: 800;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+.profile-name img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.greeting {
+    font-size: clamp(15px, 1.7vw, 28px);
+    font-weight: 600;
+    text-align: right;
+    margin-bottom: 16px;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 145px 145px;
+    gap: 10px;
+}
+
+.gallery img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, .4);
+    transition: .3s;
+}
+
+.gallery img:first-child {
+    grid-row: span 2;
+}
+
+.gallery img:hover {
+    transform: scale(1.035);
+}
+
+/* MUSIC PLAYER */
+.music-player {
+    margin: 15px 5px 0;
+    padding: 10px 15px;
+    min-height: 75px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, .65);
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.album-art {
+    width: 60px;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.music-info {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+}
+
+.song-title {
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.music-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 7px 0;
+}
+
+.music-controls button {
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.music-progress {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, .5);
+    border-radius: 5px;
+}
+
+.music-progress span {
+    display: block;
+    width: 35%;
+    height: 100%;
+    background: white;
+}
+
+/* BOTTOM APP DOCK */
+.dock {
+    position: fixed;
+    z-index: 20;
+    left: 50%;
+    bottom: 35px;
+    transform: translateX(-50%);
+    width: min(670px, 75%);
+    height: 100px;
+    padding: 15px 38px;
+    border: 2px solid white;
+    border-radius: 55px;
+    background: rgba(255, 255, 255, .15);
+    backdrop-filter: blur(14px);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 15px;
+}
+
+.dock a {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 36px;
+    transition: .3s;
+}
+
+.dock a:hover {
+    transform: translateY(-10px) scale(1.12);
+}
+
+.windows-icon {
+    color: #65b7ff !important;
+}
+
+.spotify-icon {
+    color: #1ed760 !important;
+}
+
+.photoshop-icon {
+    width: 50px !important;
+    height: 50px !important;
+    background: #071e36;
+    color: #31a8ff !important;
+    border-radius: 11px;
+    font-size: 26px !important;
+    font-weight: 800;
+}
+
+.illustrator-icon {
+    width: 50px !important;
+    height: 50px !important;
+    background: #300b00;
+    color: #ff9a00 !important;
+    border-radius: 11px;
+    font-size: 26px !important;
+    font-weight: 800;
+}
+
+.chrome-icon {
+    color: #fbbc05 !important;
+    text-shadow: 1px 1px 2px #4285f4;
+}
+
+.discord-icon {
+    color: #7289ff !important;
+}
+
+/* WATERMARK / SIGNATURE */
+.signature {
+    position: fixed;
+    z-index: 25;
+    left: 50%;
+    bottom: 8px;
+    transform: translateX(-5%);
+    color: white;
+    font-size: clamp(18px, 3vw, 43px);
+    white-space: nowrap;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, .2);
+    pointer-events: none;
+}
+
+/* TABLET */
+@media (max-width: 1100px) {
+    .main-panel {
+        width: calc(100% - 150px);
+        margin-left: 125px;
+        margin-right: 25px;
+        min-height: 650px;
+    }
+
+    .social-bar {
+        left: 15px;
+        width: 75px;
+        gap: 17px;
+    }
+
+    .social-bar a {
+        width: 48px;
+        height: 48px;
+        font-size: 22px;
+    }
+
+    .calendar {
+        width: 205px;
+        padding: 15px;
+    }
+
+    .right-panel {
+        width: 30%;
+        right: 3%;
+    }
+
+    .character {
+        left: 23%;
+        width: 48%;
+    }
+
+    .gallery {
+        grid-template-rows: 125px 125px;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 700px) {
+    body {
+        overflow-y: auto;
+    }
+
+    .main-panel {
+        width: calc(100% - 30px);
+        height: auto;
+        min-height: 1050px;
+        margin: 15px auto 145px;
+        border-radius: 30px;
+    }
+
+    .social-bar {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        width: calc(100% - 50px);
+        margin: 25px auto 0;
+        padding: 10px;
+        flex-direction: row;
+        justify-content: center;
+        gap: 12px;
+        border-radius: 40px;
+    }
+
+    .social-bar a {
+        width: 38px;
+        height: 38px;
+        font-size: 18px;
+    }
+
+    .social-bar a:first-child {
+        font-size: 25px;
+    }
+
+    .clock {
+        top: 100px;
+        left: 8%;
+    }
+
+    #time {
+        font-size: 38px;
+    }
+
+    #date {
+        font-size: 12px;
+    }
+
+    .calendar {
+        top: 190px;
+        left: 6%;
+        width: 45%;
+        max-width: 220px;
+        border-radius: 20px;
+        padding: 12px;
+    }
+
+    .calendar h2 {
+        font-size: 20px;
+    }
+
+    .weekdays, .days {
+        gap: 7px 1px;
+    }
+
+    .weekdays {
+        font-size: 10px;
+    }
+
+    .days span {
+        font-size: 12px;
+    }
+
+    .character {
+        top: 100px;
+        left: 37%;
+        width: 60%;
+        height: 390px;
+        bottom: auto;
+    }
+
+    .right-panel {
+        top: 610px;
+        left: 7%;
+        right: auto;
+        width: 86%;
+    }
+
+    .profile {
+        margin-bottom: 18px;
+    }
+
+    .sound-button {
+        width: 38px;
+        height: 38px;
+    }
+
+    .profile-name {
+        font-size: 13px;
+        padding-left: 20px;
+    }
+
+    .profile-name img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .greeting {
+        font-size: 20px;
+    }
+
+    .gallery {
+        grid-template-rows: 130px 130px;
+    }
+
+    .music-player {
+        margin-top: 12px;
+    }
+
+    .dock {
+        bottom: 15px;
+        width: calc(100% - 35px);
+        height: 75px;
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .dock a {
+        width: 35px;
+        height: 40px;
+        font-size: 27px;
+    }
+
+    .photoshop-icon, .illustrator-icon {
+        width: 35px !important;
+        height: 35px !important;
+        font-size: 19px !important;
+    }
+
+    .signature {
+        bottom: 2px;
+        font-size: 19px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<!-- SOCIAL MEDIA -->
+<nav class="social-bar">
+    <a href="#" title="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
+    <a href="https://www.tiktok.com/" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+    <a href="https://www.youtube.com/" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+    <a href="https://www.facebook.com/" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+    <a href="https://x.com/" target="_blank" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+</nav>
+
+<!-- MAIN PANEL -->
+<main class="main-panel">
+
+    <!-- CLOCK -->
+    <section class="clock">
+        <div id="time">06:12</div>
+        <div id="date">Thursday 06/27</div>
+    </section>
+
+    <!-- CALENDAR -->
+    <section class="calendar">
+        <h2 id="month">June</h2>
+        <div class="calendar-line"></div>
+        <div class="weekdays">
+            <span>S</span><span>M</span><span>T</span>
+            <span>W</span><span>T</span><span>F</span><span>S</span>
+        </div>
+        <div class="days" id="days"></div>
+        <div class="calendar-bottom"></div>
+    </section>
+
+    <!-- CENTER CHARACTER -->
+    <div class="character">
+        <!-- GANTI LINK INI DENGAN GAMBAR ANIME PNG TRANSPARAN -->
+        <img
+            src="https://placehold.co/600x1000/png?text=Your+Anime+PNG"
+            alt="Anime character">
+    </div>
+
+    <!-- RIGHT CONTENT -->
+    <section class="right-panel">
+
+        <div class="profile">
+            <div class="sound-button">
+                <i class="fa-solid fa-volume-high"></i>
+            </div>
+
+            <div class="profile-name">
+                <span>Zell Rizu</span>
+                <img
+                    src="https://placehold.co/100x100/png?text=Avatar"
+                    alt="Avatar">
+            </div>
+        </div>
+
+        <div class="greeting">Hi Zell!!</div>
+
+        <div class="gallery">
+            <!-- GANTI DENGAN LINK FOTO ANIME MILIKMU -->
+            <img src="https://placehold.co/300x500/ffe1eb/cc7290?text=Anime+1" alt="Anime 1">
+            <img src="https://placehold.co/300x300/f5d3e1/ab6682?text=Anime+2" alt="Anime 2">
+            <img src="https://placehold.co/300x300/e6b6ca/80485e?text=Anime+3" alt="Anime 3">
+        </div>
+
+        <!-- MUSIC PLAYER -->
+        <div class="music-player">
+            <img
+                class="album-art"
+                src="https://placehold.co/100x100/333333/ffffff?text=Music"
+                alt="Album art">
+
+            <div class="music-info">
+                <div class="song-title">The 1975 - About You</div>
+
+                <div class="music-controls">
+                    <button onclick="toggleRepeat()" title="Repeat">
+                        <i class="fa-solid fa-repeat"></i>
+                    </button>
+                    <button onclick="previousSong()" title="Previous">
+                        <i class="fa-solid fa-backward-step"></i>
+                    </button>
+                    <button onclick="toggleMusic()" title="Play/Pause">
+                        <i id="playIcon" class="fa-solid fa-play"></i>
+                    </button>
+                    <button onclick="nextSong()" title="Next">
+                        <i class="fa-solid fa-forward-step"></i>
+                    </button>
+                    <button onclick="toggleFavorite()" title="Favorite">
+                        <i id="heartIcon" class="fa-solid fa-heart"></i>
+                    </button>
+                </div>
+
+                <div class="music-progress">
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<!-- BOTTOM DOCK -->
+<nav class="dock">
+    <a href="#" class="windows-icon" title="Start">
+        <i class="fa-brands fa-windows"></i>
+    </a>
+
+    <a href="https://open.spotify.com/" target="_blank"
+       class="spotify-icon" title="Spotify">
+        <i class="fa-brands fa-spotify"></i>
+    </a>
+
+    <a href="https://www.adobe.com/products/photoshop.html"
+       target="_blank" class="photoshop-icon" title="Photoshop">Ps</a>
+
+    <a href="https://www.google.com/chrome/" target="_blank"
+       class="chrome-icon" title="Chrome">
+        <i class="fa-brands fa-chrome"></i>
+    </a>
+
+    <a href="https://www.adobe.com/products/illustrator.html"
+       target="_blank" class="illustrator-icon" title="Illustrator">Ai</a>
+
+    <a href="https://discord.com/" target="_blank"
+       class="discord-icon" title="Discord">
+        <i class="fa-brands fa-discord"></i>
+    </a>
+</nav>
+
+<script>
+// JAM REAL-TIME
+function updateClock() {
+    const now = new Date();
+
+    document.getElementById("time").textContent =
+        now.toLocaleTimeString("id-ID", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false
+        });
+
+    const dateText = now.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "2-digit",
+        day: "2-digit"
+    });
+
+    document.getElementById("date").textContent =
+        dateText.replace(",", "");
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+
+// KALENDER OTOMATIS
+function createCalendar() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const today = now.getDate();
+
+    document.getElementById("month").textContent =
+        now.toLocaleDateString("en-US", { month: "long" });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const totalDays = new Date(year, month + 1, 0).getDate();
+    const daysContainer = document.getElementById("days");
+
+    daysContainer.innerHTML = "";
+
+    for (let i = 0; i < firstDay; i++) {
+        const blank = document.createElement("span");
+        daysContainer.appendChild(blank);
+    }
+
+    for (let day = 1; day <= totalDays; day++) {
+        const cell = document.createElement("span");
+        cell.textContent = day;
+
+        if (day === today) {
+            cell.classList.add("today");
+        }
+
+        daysContainer.appendChild(cell);
+    }
+}
+
+createCalendar();
+
+// MUSIC PLAYER DEMO
+let isPlaying = false;
+let isFavorite = false;
+let repeat = false;
+
+function toggleMusic() {
+    isPlaying = !isPlaying;
+    document.getElementById("playIcon").className =
+        isPlaying ? "fa-solid fa-pause" : "fa-solid fa-play";
+}
+
+function toggleFavorite() {
+    isFavorite = !isFavorite;
+    document.getElementById("heartIcon").style.color =
+        isFavorite ? "#ff5477" : "white";
+}
+
+function toggleRepeat() {
+    repeat = !repeat;
+    const button = document.querySelector(".music-controls button");
+    button.style.color = repeat ? "#ff9eb8" : "white";
+}
+
+function previousSong() {
+    alert("Tombol lagu sebelumnya diklik.");
+}
+
+function nextSong() {
+    alert("Tombol lagu berikutnya diklik.");
+}
+</script>
+
+</body>
+</html>
